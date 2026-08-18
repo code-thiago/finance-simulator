@@ -5,7 +5,7 @@ vi.mock("next/server", () => {
   return {
     NextRequest: Request,
     NextResponse: {
-      json: (body: any, init?: ResponseInit) => {
+      json: (body: unknown, init?: ResponseInit) => {
         return Response.json(body, init);
       },
     },

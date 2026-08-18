@@ -3,6 +3,17 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  --border: #EEF2FF;
+  --input: #EEF2FF;
+  --ring: #6366F1;
+  --chart-1: #EEF2FF;
+  --chart-2: #A5B4FC;
+  --chart-3: #A5B4FC;
+  --chart-4: #6366F1;
+  --chart-5: #4338CA;
+  --investido: #A5B4FC;
+  --juros: #4338CA;
 }
 
 @theme inline {
@@ -10,6 +21,12 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-investido: var(--investido);
+  --color-juros: var(--juros);
 }
 
 @media (prefers-color-scheme: dark) {
