@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useCotacaoAcao, useCotacaoCambio } from "../api/hooks";
 import { CotacaoError } from "../api/client";
+import { formatarReal } from "@/src/lib/formatters";
 
 // Formata o ISO string retornado na resposta para "HH:MM"
 function formatarHora(isoString?: string) {
@@ -16,14 +17,6 @@ function formatarHora(isoString?: string) {
     return "";
   }
 }
-
-// Formatador de Moeda
-const formatarReal = (val: number) => {
-  return new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  }).format(val);
-};
 
 export default function CotacaoWidget() {
   const [tickerInput, setTickerInput] = useState("PETR4");
@@ -73,7 +66,7 @@ export default function CotacaoWidget() {
   return (
     <div className="w-full max-w-6xl mx-auto px-4 md:px-8 mb-6 mt-2">
       <div className="bg-white dark:bg-zinc-900 rounded-2xl border border-border dark:border-zinc-800 shadow-sm p-4 flex flex-col md:flex-row gap-6 md:items-center justify-between w-full">
-        
+
         {/* Seção da Ação */}
         <div className="flex-1 flex flex-col sm:flex-row items-start sm:items-center gap-4 min-w-0">
           <div className="flex items-center gap-2">
@@ -110,16 +103,15 @@ export default function CotacaoWidget() {
                 <span className="text-lg font-extrabold font-mono text-zinc-900 dark:text-zinc-50 tabular-nums">
                   {formatarReal(acaoRes.dados.preco)}
                 </span>
-                
+
                 {/* Variação em Verde ou Vermelho */}
                 <span
-                  className={`text-xs font-extrabold font-mono tabular-nums ${
-                    acaoRes.dados.variacao > 0
+                  className={`text-xs font-extrabold font-mono tabular-nums ${acaoRes.dados.variacao > 0
                       ? "text-emerald-600 dark:text-emerald-400"
                       : acaoRes.dados.variacao < 0
-                      ? "text-rose-600 dark:text-rose-400"
-                      : "text-zinc-500 dark:text-zinc-400"
-                  }`}
+                        ? "text-rose-600 dark:text-rose-400"
+                        : "text-zinc-500 dark:text-zinc-400"
+                    }`}
                 >
                   {acaoRes.dados.variacao > 0 ? "+" : ""}
                   {formatarReal(acaoRes.dados.variacao)} ({acaoRes.dados.variacaoPercentual > 0 ? "+" : ""}
@@ -168,10 +160,7 @@ export default function CotacaoWidget() {
               <div className="flex flex-col items-end">
                 <div className="flex items-baseline gap-2">
                   <span className="text-lg font-extrabold font-mono text-zinc-900 dark:text-zinc-50 tabular-nums">
-                    {new Intl.NumberFormat("pt-BR", {
-                      style: "currency",
-                      currency: "BRL",
-                    }).format(cambioRes.dados.taxa)}
+                    {formatarReal(cambioRes.dados.taxa)}
                   </span>
                 </div>
                 <span className="text-[10px] text-zinc-400 font-medium mt-0.5">

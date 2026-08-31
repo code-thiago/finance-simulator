@@ -1,28 +1,16 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import {
-  BarChart,
-  Bar,
-  Cell,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   compararInvestimentos,
   ResultadoInvestimento,
 } from "../core/comparadorInvestimentos";
-import { useSession } from "@/src/lib/auth-client";
-import { useSalvarSimulacao } from "../api/useSalvarSimulacao";
+import { formatarMoeda } from "@/src/lib/formatters";
+import BlocoSalvarSimulacao from "./BlocoSalvarSimulacao";
+import GraficoComparacao, { ItemDadoGraficoComparacao } from "./GraficoComparacao";
 
 export default function ComparadorInvestimentos() {
   const [isMounted, setIsMounted] = useState(false);
-  const { data: session } = useSession();
-  const { salvar, salvando, sucesso, erro } = useSalvarSimulacao();
-  const [nomeSimulacao, setNomeSimulacao] = useState("");
 
   // Estados dos inputs gerenciados como string para digitação fluida
   const [valorInicialStr, setValorInicialStr] = useState<string>("10000");
@@ -60,54 +48,61 @@ export default function ComparadorInvestimentos() {
     !isNaN(percentualCDI) &&
     percentualCDI >= 0;
 
-  let resultados: ResultadoInvestimento[] = [];
-  if (isValid) {
+  // Memoização do cálculo de comparação de investimentos
+  const resultados: ResultadoInvestimento[] = useMemo(() => {
+    if (!isValid) return [];
     try {
-      resultados = compararInvestimentos({
+      return compararInvestimentos({
         valorInicial,
         periodoMeses,
         taxaSelicAnual,
         percentualCDI,
       });
     } catch {
-      resultados = [];
+      return [];
     }
-  }
+  }, [valorInicial, periodoMeses, taxaSelicAnual, percentualCDI, isValid]);
 
-  // Se for inválido, exibe estado zerado
-  const produtosOrdemPadrao = ["CDB", "TESOURO_SELIC", "POUPANCA"] as const;
-  const resultadosExibicao =
-    isValid && resultados.length > 0
-      ? resultados
-      : produtosOrdemPadrao.map((p) => ({
-          produto: p,
-          valorBruto: 0,
-          valorLiquido: 0,
-          rendimentoLiquido: 0,
-          aliquotaIR: p === "POUPANCA" ? null : 0,
-        }));
+  // Se for inválido, exibe estado zerado memoizado
+  const resultadosExibicao: ResultadoInvestimento[] = useMemo(() => {
+    if (isValid && resultados.length > 0) {
+      return resultados;
+    }
+    const produtosOrdemPadrao = ["CDB", "TESOURO_SELIC", "POUPANCA"] as const;
+    return produtosOrdemPadrao.map((p) => ({
+      produto: p,
+      valorBruto: 0,
+      valorLiquido: 0,
+      rendimentoLiquido: 0,
+      aliquotaIR: p === "POUPANCA" ? null : 0,
+    }));
+  }, [isValid, resultados]);
 
-  // Preparar dados do gráfico
-  const dadosGrafico = resultadosExibicao.map((r) => {
-    let name = "CDB";
-    if (r.produto === "TESOURO_SELIC") name = "Tesouro Selic";
-    else if (r.produto === "POUPANCA") name = "Poupança";
+  // Preparar dados do gráfico com memoização
+  const dadosGrafico: ItemDadoGraficoComparacao[] = useMemo(() => {
+    return resultadosExibicao.map((r) => {
+      let name = "CDB";
+      if (r.produto === "TESOURO_SELIC") name = "Tesouro Selic";
+      else if (r.produto === "POUPANCA") name = "Poupança";
 
-    return {
-      name,
-      produto: r.produto,
-      valorLiquido: r.valorLiquido,
-      valorBruto: r.valorBruto,
-    };
-  });
+      return {
+        name,
+        produto: r.produto,
+        valorLiquido: r.valorLiquido,
+        valorBruto: r.valorBruto,
+      };
+    });
+  }, [resultadosExibicao]);
 
-  // Formatador de Moeda
-  const formatarMoeda = (val: number) => {
-    return new Intl.NumberFormat("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-    }).format(val);
-  };
+  // Parâmetros memoizados para salvar comparação
+  const parametrosSalvar = useMemo(() => ({
+    valorInicial,
+    periodo,
+    periodoUnidade,
+    periodoMeses,
+    taxaSelicAnual,
+    percentualCDI,
+  }), [valorInicial, periodo, periodoUnidade, periodoMeses, taxaSelicAnual, percentualCDI]);
 
   const formatarNomeProduto = (produto: "CDB" | "TESOURO_SELIC" | "POUPANCA") => {
     switch (produto) {
@@ -282,126 +277,12 @@ export default function ComparadorInvestimentos() {
             </div>
           )}
 
-          {/* Bloco de Salvar Simulação (apenas para usuários logados e com simulação válida) */}
-          {isValid && session?.user && (
-            <div className="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-border dark:border-zinc-800 shadow-sm space-y-4">
-              <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-2">
-                <h2 className="text-sm font-bold text-zinc-800 dark:text-zinc-200 uppercase tracking-wider">
-                  Salvar Comparação
-                </h2>
-                <span className="text-[10px] font-semibold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/40 px-2 py-0.5 rounded-full">
-                  Logado
-                </span>
-              </div>
-
-              {sucesso && (
-                <div
-                  role="status"
-                  className="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800/60 text-emerald-700 dark:text-emerald-300 text-xs font-medium flex items-center gap-2"
-                >
-                  <svg
-                    className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M5 13l4 4L19 7"
-                    />
-                  </svg>
-                  <span>Comparação salva com sucesso!</span>
-                </div>
-              )}
-
-              {erro && (
-                <div
-                  role="alert"
-                  className="p-3 rounded-xl bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-800/60 text-red-700 dark:text-red-300 text-xs font-medium"
-                >
-                  {erro}
-                </div>
-              )}
-
-              <form
-                onSubmit={async (e) => {
-                  e.preventDefault();
-                  if (!isValid) return;
-                  const res = await salvar({
-                    tipo: "comparador",
-                    nome: nomeSimulacao,
-                    parametros: {
-                      valorInicial,
-                      periodo,
-                      periodoUnidade,
-                      periodoMeses,
-                      taxaSelicAnual,
-                      percentualCDI,
-                    },
-                  });
-                  if (res.ok) {
-                    setNomeSimulacao("");
-                  }
-                }}
-                className="space-y-3"
-              >
-                <div className="space-y-1.5">
-                  <label
-                    htmlFor="nomeComparacao"
-                    className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider block"
-                  >
-                    Nome da simulação (opcional)
-                  </label>
-                  <div className="relative rounded-lg border border-border dark:border-zinc-800 overflow-hidden focus-within:ring-2 focus-within:ring-ring dark:focus-within:ring-indigo-500/50 focus-within:border-transparent transition-all">
-                    <input
-                      id="nomeComparacao"
-                      type="text"
-                      placeholder="Ex: CDB vs Selic 12m"
-                      value={nomeSimulacao}
-                      onChange={(e) => setNomeSimulacao(e.target.value)}
-                      className="w-full bg-white dark:bg-zinc-950 px-3.5 py-2 text-sm font-medium text-zinc-900 dark:text-zinc-50 focus:outline-none placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
-                    />
-                  </div>
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={salvando}
-                  className="w-full py-2.5 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white text-xs font-bold uppercase tracking-wider shadow-sm transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer"
-                >
-                  {salvando ? (
-                    <>
-                      <svg
-                        className="animate-spin h-3.5 w-3.5 text-white"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
-                        <circle
-                          className="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="currentColor"
-                          strokeWidth="4"
-                        />
-                        <path
-                          className="opacity-75"
-                          fill="currentColor"
-                          d="M4 12a8 8 0 018-8v8H4z"
-                        />
-                      </svg>
-                      <span>Salvando...</span>
-                    </>
-                  ) : (
-                    "Salvar Comparação"
-                  )}
-                </button>
-              </form>
-            </div>
-          )}
+          {/* Bloco de Salvar Simulação (isolado em componente próprio para não re-renderizar o pai) */}
+          <BlocoSalvarSimulacao
+            tipo="comparador"
+            parametros={parametrosSalvar}
+            isValid={isValid}
+          />
         </div>
 
         {/* Lado Direito: Resultados e Gráficos */}
@@ -483,106 +364,12 @@ export default function ComparadorInvestimentos() {
             })}
           </div>
 
-          {/* Gráfico Comparativo */}
-          <div className="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-border dark:border-zinc-800 shadow-sm flex flex-col h-[350px]">
-            <div className="mb-4">
-              <h3 className="text-sm font-bold text-zinc-800 dark:text-zinc-200 uppercase tracking-wider">
-                Comparação de Valor Líquido
-              </h3>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
-                Valores acumulados após o período simulado.
-              </p>
-            </div>
-
-            <div className="flex-1 w-full min-h-0">
-              {isMounted ? (
-                isValid ? (
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart
-                      data={dadosGrafico}
-                      margin={{ top: 10, right: 10, left: -10, bottom: 5 }}
-                    >
-                      <CartesianGrid
-                        strokeDasharray="3 3"
-                        stroke="var(--border)"
-                        className="dark:opacity-10"
-                      />
-                      <XAxis
-                        dataKey="name"
-                        stroke="#A1A1AA"
-                        fontSize={11}
-                        tickLine={false}
-                        axisLine={false}
-                        dy={8}
-                      />
-                      <YAxis
-                        stroke="#A1A1AA"
-                        fontSize={11}
-                        tickLine={false}
-                        axisLine={false}
-                        tickFormatter={(val) => {
-                          if (val >= 1e6) return `R$ ${(val / 1e6).toFixed(1)}M`;
-                          if (val >= 1e3) return `R$ ${(val / 1e3).toFixed(0)}k`;
-                          return `R$ ${val}`;
-                        }}
-                        dx={-5}
-                      />
-                      <Tooltip
-                        content={({ active, payload }) => {
-                          if (active && payload && payload.length) {
-                            const data = payload[0].payload;
-                            return (
-                              <div className="bg-white/95 dark:bg-zinc-950/95 backdrop-blur-sm p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-xl text-xs space-y-2">
-                                <p className="font-bold text-zinc-950 dark:text-zinc-50 border-b border-zinc-100 dark:border-zinc-800 pb-1">
-                                  {data.name}
-                                </p>
-                                <div className="space-y-1 font-mono">
-                                  <div className="flex justify-between gap-6">
-                                    <span className="text-zinc-500 dark:text-zinc-400">
-                                      Valor Bruto:
-                                    </span>
-                                    <span className="font-bold tabular-nums text-zinc-900 dark:text-zinc-100">
-                                      {formatarMoeda(data.valorBruto)}
-                                    </span>
-                                  </div>
-                                  <div className="flex justify-between gap-6 border-t border-zinc-100 dark:border-zinc-800 pt-1 font-bold">
-                                    <span className="text-zinc-800 dark:text-zinc-200">
-                                      Valor Líquido:
-                                    </span>
-                                    <span className="tabular-nums text-ring dark:text-indigo-400">
-                                      {formatarMoeda(data.valorLiquido)}
-                                    </span>
-                                  </div>
-                                </div>
-                              </div>
-                            );
-                          }
-                          return null;
-                        }}
-                      />
-                      <Bar dataKey="valorLiquido" radius={[6, 6, 0, 0]}>
-                        {dadosGrafico.map((entry, index) => {
-                          const color = obterCorProduto(entry.produto);
-                          return <Cell key={`cell-${index}`} fill={color} />;
-                        })}
-                      </Bar>
-                    </BarChart>
-                  </ResponsiveContainer>
-                ) : (
-                  <div className="w-full h-full flex flex-col items-center justify-center bg-zinc-50/50 dark:bg-zinc-950/20 border border-dashed border-zinc-200 dark:border-zinc-800 rounded-xl p-6 text-center">
-                    <p className="text-sm font-semibold text-zinc-500 dark:text-zinc-400">
-                      Preencha os dados
-                    </p>
-                    <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-1 max-w-xs">
-                      Insira as configurações de comparação para visualizar o gráfico.
-                    </p>
-                  </div>
-                )
-              ) : (
-                <div className="w-full h-full bg-zinc-50/50 dark:bg-zinc-950/20 animate-pulse rounded-xl" />
-              )}
-            </div>
-          </div>
+          {/* Gráfico Comparativo (memoizado) */}
+          <GraficoComparacao
+            dados={dadosGrafico}
+            isValid={isValid}
+            isMounted={isMounted}
+          />
         </div>
       </div>
     </div>
