@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { desc, eq } from "drizzle-orm";
 import { auth } from "@/src/lib/auth";
 import { db } from "@/src/db";
 import { simulacoes } from "@/src/db/schema";
@@ -67,3 +68,39 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
+export async function GET(request: NextRequest) {
+  try {
+    const session = await auth.api.getSession({
+      headers: request.headers,
+    });
+
+    if (!session?.user) {
+      return NextResponse.json(
+        { erro: { mensagem: "Não autorizado. Faça login para acessar suas simulações." } },
+        { status: 401 }
+      );
+    }
+
+    const lista = await db
+      .select({
+        id: simulacoes.id,
+        tipo: simulacoes.tipo,
+        nome: simulacoes.nome,
+        parametros: simulacoes.parametros,
+        criadoEm: simulacoes.criadoEm,
+      })
+      .from(simulacoes)
+      .where(eq(simulacoes.userId, session.user.id))
+      .orderBy(desc(simulacoes.criadoEm));
+
+    return NextResponse.json(lista);
+  } catch (error) {
+    console.error("Erro ao buscar simulações:", error);
+    return NextResponse.json(
+      { erro: { mensagem: "Erro interno do servidor ao buscar simulações." } },
+      { status: 500 }
+    );
+  }
+}
+

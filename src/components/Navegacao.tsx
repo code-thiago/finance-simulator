@@ -14,6 +14,7 @@ export default function Navegacao() {
   const links = [
     { href: "/", label: "Juros Compostos" },
     { href: "/comparador", label: "Comparador" },
+    ...(session?.user ? [{ href: "/minhas-simulacoes", label: "Minhas Simulações" }] : []),
   ];
 
   const handleSignOut = async () => {
