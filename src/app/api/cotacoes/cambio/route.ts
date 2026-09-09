@@ -1,7 +1,43 @@
 import { NextRequest, NextResponse } from "next/server";
+import { cambioGlobalLimiter, cambioIpLimiter, getClientIp } from "../../../../lib/rate-limit";
 
 export async function GET(request: NextRequest) {
   try {
+    // 1. Checar limite global primeiro
+    if (cambioGlobalLimiter) {
+      const globalCheck = await cambioGlobalLimiter.limit("global");
+      if (!globalCheck.success) {
+        return NextResponse.json(
+          {
+            sucesso: false,
+            erro: {
+              tipo: "RATE_LIMIT",
+              mensagem: "Limite global de requisições excedido. Tente novamente mais tarde.",
+            },
+          },
+          { status: 429 }
+        );
+      }
+    }
+
+    // 2. Checar limite por IP
+    if (cambioIpLimiter) {
+      const clientIp = getClientIp(request);
+      const ipCheck = await cambioIpLimiter.limit(clientIp);
+      if (!ipCheck.success) {
+        return NextResponse.json(
+          {
+            sucesso: false,
+            erro: {
+              tipo: "RATE_LIMIT",
+              mensagem: "Limite de requisições por IP excedido. Tente novamente mais tarde.",
+            },
+          },
+          { status: 429 }
+        );
+      }
+    }
+
     const { searchParams } = new URL(request.url);
     const par = searchParams.get("par");
 
