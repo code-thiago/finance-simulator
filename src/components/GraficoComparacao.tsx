@@ -51,12 +51,12 @@ export const GraficoComparacao = memo(function GraficoComparacao({
   isMounted,
 }: GraficoComparacaoProps) {
   return (
-    <div className="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-border dark:border-zinc-800 shadow-sm flex flex-col h-[350px]">
+    <div className="bg-card p-6 rounded-2xl border border-border dark:border-zinc-800 shadow-sm flex flex-col h-[350px]">
       <div className="mb-4">
         <h3 className="text-sm font-bold text-zinc-800 dark:text-zinc-200 uppercase tracking-wider">
           Comparação de Valor Líquido
         </h3>
-        <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+        <p className="text-xs text-muted-foreground mt-0.5">
           Valores acumulados após o período simulado.
         </p>
       </div>
@@ -95,16 +95,16 @@ export const GraficoComparacao = memo(function GraficoComparacao({
                     if (active && payload && payload.length) {
                       const data = payload[0].payload;
                       return (
-                        <div className="bg-white/95 dark:bg-zinc-950/95 backdrop-blur-sm p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-xl text-xs space-y-2">
-                          <p className="font-bold text-zinc-950 dark:text-zinc-50 border-b border-zinc-100 dark:border-zinc-800 pb-1">
+                        <div className="bg-card/95 backdrop-blur-sm p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-xl text-xs space-y-2">
+                          <p className="font-bold text-foreground border-b border-zinc-100 dark:border-zinc-800 pb-1">
                             {data.name}
                           </p>
                           <div className="space-y-1 font-mono">
                             <div className="flex justify-between gap-6">
-                              <span className="text-zinc-500 dark:text-zinc-400">
+                              <span className="text-muted-foreground">
                                 Valor Bruto:
                               </span>
-                              <span className="font-bold tabular-nums text-zinc-900 dark:text-zinc-100">
+                              <span className="font-bold tabular-nums text-foreground">
                                 {formatarMoeda(data.valorBruto)}
                               </span>
                             </div>
@@ -132,17 +132,17 @@ export const GraficoComparacao = memo(function GraficoComparacao({
               </BarChart>
             </ResponsiveContainer>
           ) : (
-            <div className="w-full h-full flex flex-col items-center justify-center bg-zinc-50/50 dark:bg-zinc-950/20 border border-dashed border-zinc-200 dark:border-zinc-800 rounded-xl p-6 text-center">
-              <p className="text-sm font-semibold text-zinc-500 dark:text-zinc-400">
+            <div className="w-full h-full flex flex-col items-center justify-center bg-muted border border-dashed border-zinc-200 dark:border-zinc-800 rounded-xl p-6 text-center">
+              <p className="text-sm font-semibold text-muted-foreground">
                 Preencha os dados
               </p>
-              <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-1 max-w-xs">
+              <p className="text-xs text-muted-foreground mt-1 max-w-xs">
                 Insira as configurações de comparação para visualizar o gráfico.
               </p>
             </div>
           )
         ) : (
-          <div className="w-full h-full bg-zinc-50/50 dark:bg-zinc-950/20 animate-pulse rounded-xl" />
+          <div className="w-full h-full bg-muted animate-pulse rounded-xl" />
         )}
       </div>
     </div>

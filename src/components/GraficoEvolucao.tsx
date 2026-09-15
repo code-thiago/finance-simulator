@@ -60,25 +60,25 @@ export const GraficoEvolucao = memo(function GraficoEvolucao({
   const formatarEixoX = criarFormatadorEixoX(periodoUnidade);
 
   return (
-    <div className="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-border dark:border-zinc-800 shadow-sm flex flex-col w-full h-[480px]">
+    <div className="bg-card p-6 rounded-2xl border border-border dark:border-zinc-800 shadow-sm flex flex-col w-full h-[480px]">
       {/* Custom Header que funciona como Legenda */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-zinc-100 dark:border-zinc-800 pb-4 mb-4 gap-2">
         <div>
-          <h3 className="font-bold text-zinc-950 dark:text-zinc-50">
+          <h3 className="font-bold text-foreground">
             Evolução Patrimonial
           </h3>
-          <p className="text-xs text-zinc-500 dark:text-zinc-400">
+          <p className="text-xs text-muted-foreground">
             Comparativo da evolução patrimonial acumulada no período.
           </p>
         </div>
         <div className="flex items-center gap-4 text-xs font-semibold select-none">
           <div className="flex items-center gap-1.5">
             <span className="w-3.5 h-3.5 rounded-sm bg-investido border border-indigo-200 dark:border-transparent"></span>
-            <span className="text-zinc-600 dark:text-zinc-400">Investido</span>
+            <span className="text-muted-foreground">Investido</span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className="w-3.5 h-3.5 rounded-sm bg-juros"></span>
-            <span className="text-zinc-600 dark:text-zinc-400">Juros</span>
+            <span className="text-muted-foreground">Juros</span>
           </div>
         </div>
       </div>
@@ -119,21 +119,21 @@ export const GraficoEvolucao = memo(function GraficoEvolucao({
                     if (active && payload && payload.length) {
                       const data = payload[0].payload;
                       return (
-                        <div className="bg-white/95 dark:bg-zinc-950/95 backdrop-blur-sm p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-xl text-xs space-y-2">
-                          <p className="font-bold text-zinc-950 dark:text-zinc-50 border-b border-zinc-100 dark:border-zinc-800 pb-1">
+                        <div className="bg-card/95 backdrop-blur-sm p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-xl text-xs space-y-2">
+                          <p className="font-bold text-foreground border-b border-zinc-100 dark:border-zinc-800 pb-1">
                             {formatarLabelTooltip(label)}
                           </p>
                           <div className="space-y-1.5 font-mono">
                             <div className="flex justify-between gap-6">
-                              <span className="text-zinc-500 dark:text-zinc-400">
+                              <span className="text-muted-foreground">
                                 Investido:
                               </span>
-                              <span className="font-bold tabular-nums text-zinc-900 dark:text-zinc-100">
+                              <span className="font-bold tabular-nums text-foreground">
                                 {formatarMoeda(data.valorInvestido)}
                               </span>
                             </div>
                             <div className="flex justify-between gap-6">
-                              <span className="text-zinc-500 dark:text-zinc-400">
+                              <span className="text-muted-foreground">
                                 Juros:
                               </span>
                               <span className="font-bold tabular-nums text-juros dark:text-indigo-400">
@@ -175,18 +175,18 @@ export const GraficoEvolucao = memo(function GraficoEvolucao({
               </AreaChart>
             </ResponsiveContainer>
           ) : (
-            <div className="w-full h-full flex flex-col items-center justify-center bg-zinc-50/50 dark:bg-zinc-950/20 border border-dashed border-zinc-200 dark:border-zinc-800 rounded-xl p-6 text-center">
-              <p className="text-sm font-semibold text-zinc-500 dark:text-zinc-400">
+            <div className="w-full h-full flex flex-col items-center justify-center bg-muted border border-dashed border-zinc-200 dark:border-zinc-800 rounded-xl p-6 text-center">
+              <p className="text-sm font-semibold text-muted-foreground">
                 Nenhum dado para exibir
               </p>
-              <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-1 max-w-xs">
+              <p className="text-xs text-muted-foreground mt-1 max-w-xs">
                 Preencha os valores do investimento à esquerda para gerar o gráfico de projeção.
               </p>
             </div>
           )
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-zinc-50/50 dark:bg-zinc-900/50 rounded-xl animate-pulse">
-            <span className="text-zinc-400 dark:text-zinc-500 text-xs font-semibold">
+          <div className="w-full h-full flex items-center justify-center bg-muted rounded-xl animate-pulse">
+            <span className="text-muted-foreground text-xs font-semibold">
               Carregando gráfico de evolução...
             </span>
           </div>

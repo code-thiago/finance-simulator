@@ -131,10 +131,10 @@ export default function ComparadorInvestimentos() {
     <div className="w-full max-w-6xl mx-auto flex flex-col gap-8 p-4 md:p-8">
       {/* Cabeçalho */}
       <div>
-        <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+        <h1 className="text-3xl font-bold tracking-tight text-foreground">
           Comparador de Investimentos
         </h1>
-        <p className="text-zinc-500 dark:text-zinc-400 mt-1">
+        <p className="text-muted-foreground mt-1">
           Compare de forma simples a rentabilidade líquida do CDB, Tesouro Selic e Poupança.
         </p>
       </div>
@@ -143,7 +143,7 @@ export default function ComparadorInvestimentos() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Lado Esquerdo: Formulário */}
         <div className="lg:col-span-5 flex flex-col gap-6 w-full">
-          <div className="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-border dark:border-zinc-800 shadow-sm space-y-4">
+          <div className="bg-card p-6 rounded-2xl border border-border dark:border-zinc-800 shadow-sm space-y-4">
             <h2 className="text-sm font-bold text-zinc-800 dark:text-zinc-200 uppercase tracking-wider border-b border-zinc-100 dark:border-zinc-800 pb-2">
               Configurações da Comparação
             </h2>
@@ -152,7 +152,7 @@ export default function ComparadorInvestimentos() {
             <div className="space-y-1.5">
               <label
                 htmlFor="valorInicial"
-                className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider block"
+                className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block"
               >
                 Valor Inicial (R$)
               </label>
@@ -168,7 +168,7 @@ export default function ComparadorInvestimentos() {
                   placeholder="0,00"
                   value={valorInicialStr}
                   onChange={(e) => setValorInicialStr(e.target.value)}
-                  className="w-full bg-white dark:bg-zinc-950 pl-9 pr-3 py-2.5 text-base font-semibold text-zinc-900 dark:text-zinc-50 focus:outline-none placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
+                  className="w-full bg-white dark:bg-zinc-950 pl-9 pr-3 py-2.5 text-base font-semibold text-foreground focus:outline-none placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
                 />
               </div>
             </div>
@@ -177,7 +177,7 @@ export default function ComparadorInvestimentos() {
             <div className="space-y-1.5">
               <label
                 htmlFor="periodo"
-                className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider block"
+                className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block"
               >
                 Período da Aplicação
               </label>
@@ -190,16 +190,16 @@ export default function ComparadorInvestimentos() {
                   placeholder="0"
                   value={periodoStr}
                   onChange={(e) => setPeriodoStr(e.target.value)}
-                  className="w-full min-w-0 bg-transparent px-3 py-2.5 text-base font-semibold text-zinc-900 dark:text-zinc-50 focus:outline-none placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
+                  className="w-full min-w-0 bg-transparent px-3 py-2.5 text-base font-semibold text-foreground focus:outline-none placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
                 />
-                <div className="flex items-center gap-1 border-l border-border dark:border-zinc-800 px-2 py-1 bg-zinc-50/50 dark:bg-zinc-900 select-none">
+                <div className="flex items-center gap-1 border-l border-border dark:border-zinc-800 px-2 py-1 bg-muted select-none">
                   <button
                     type="button"
                     onClick={() => setPeriodoUnidade("meses")}
                     className={`px-2 py-1 text-[10px] font-bold rounded transition-colors ${
                       periodoUnidade === "meses"
                         ? "bg-ring text-white"
-                        : "text-zinc-500 hover:bg-zinc-200 dark:hover:bg-zinc-800"
+                        : "text-muted-foreground hover:bg-zinc-200 dark:hover:bg-zinc-800"
                     }`}
                   >
                     Meses
@@ -210,7 +210,7 @@ export default function ComparadorInvestimentos() {
                     className={`px-2 py-1 text-[10px] font-bold rounded transition-colors ${
                       periodoUnidade === "anos"
                         ? "bg-ring text-white"
-                        : "text-zinc-500 hover:bg-zinc-200 dark:hover:bg-zinc-800"
+                        : "text-muted-foreground hover:bg-zinc-200 dark:hover:bg-zinc-800"
                     }`}
                   >
                     Anos
@@ -223,7 +223,7 @@ export default function ComparadorInvestimentos() {
             <div className="space-y-1.5">
               <label
                 htmlFor="taxaSelic"
-                className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider block"
+                className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block"
               >
                 Taxa Selic Anual (%)
               </label>
@@ -236,7 +236,7 @@ export default function ComparadorInvestimentos() {
                   placeholder="0,00"
                   value={taxaSelicAnualStr}
                   onChange={(e) => setTaxaSelicAnualStr(e.target.value)}
-                  className="w-full bg-white dark:bg-zinc-950 px-3 py-2.5 text-base font-semibold text-zinc-900 dark:text-zinc-50 focus:outline-none placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
+                  className="w-full bg-white dark:bg-zinc-950 px-3 py-2.5 text-base font-semibold text-foreground focus:outline-none placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-zinc-400 font-semibold select-none">
                   % a.a.
@@ -248,7 +248,7 @@ export default function ComparadorInvestimentos() {
             <div className="space-y-1.5">
               <label
                 htmlFor="percentualCDI"
-                className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider block"
+                className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block"
               >
                 Percentual do CDI (%)
               </label>
@@ -261,7 +261,7 @@ export default function ComparadorInvestimentos() {
                   placeholder="100"
                   value={percentualCDIStr}
                   onChange={(e) => setPercentualCDIStr(e.target.value)}
-                  className="w-full bg-white dark:bg-zinc-950 px-3 py-2.5 text-base font-semibold text-zinc-900 dark:text-zinc-50 focus:outline-none placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
+                  className="w-full bg-white dark:bg-zinc-950 px-3 py-2.5 text-base font-semibold text-foreground focus:outline-none placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-zinc-400 font-semibold select-none">
                   % do CDI
@@ -296,7 +296,7 @@ export default function ComparadorInvestimentos() {
               return (
                 <div
                   key={r.produto}
-                  className={`relative bg-white dark:bg-zinc-900 rounded-2xl shadow-sm transition-all duration-300 flex flex-col overflow-hidden border ${
+                  className={`relative bg-card rounded-2xl shadow-sm transition-all duration-300 flex flex-col overflow-hidden border ${
                     isBest
                       ? "border-ring dark:border-indigo-500 shadow-md scale-[1.02]"
                       : "border-border dark:border-zinc-800"
@@ -330,7 +330,7 @@ export default function ComparadorInvestimentos() {
                         className={`text-xl font-extrabold font-mono tracking-tight mt-0.5 tabular-nums ${
                           isBest
                             ? "text-ring dark:text-indigo-400"
-                            : "text-zinc-900 dark:text-zinc-50"
+                            : "text-foreground"
                         }`}
                       >
                         {formatarMoeda(r.valorLiquido)}

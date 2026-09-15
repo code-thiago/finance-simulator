@@ -199,7 +199,7 @@ function CardSimulacao({ item }: { item: SimulacaoDb }) {
   const dataFormatada = formatarDataCriacao(item.criadoEm);
 
   return (
-    <div className="bg-white dark:bg-zinc-900 rounded-2xl border border-border dark:border-zinc-800 p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between gap-5">
+    <div className="bg-card rounded-2xl border border-border dark:border-zinc-800 p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between gap-5">
       {/* Topo do Card */}
       <div className="space-y-3">
         <div className="flex items-center justify-between gap-2 flex-wrap">
@@ -209,8 +209,8 @@ function CardSimulacao({ item }: { item: SimulacaoDb }) {
               Juros Compostos
             </span>
           ) : (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold tracking-wide bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 dark:bg-emerald-400" />
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold tracking-wide bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800/60">
+              <span className="w-1.5 h-1.5 rounded-full bg-indigo-600 dark:bg-indigo-400" />
               Comparador
             </span>
           )}
@@ -221,7 +221,7 @@ function CardSimulacao({ item }: { item: SimulacaoDb }) {
         </div>
 
         <div>
-          <h2 className="text-base font-bold text-zinc-900 dark:text-zinc-100 tracking-tight leading-snug">
+          <h2 className="text-base font-bold text-foreground tracking-tight leading-snug">
             {nomeExibicao}
           </h2>
         </div>
@@ -232,11 +232,11 @@ function CardSimulacao({ item }: { item: SimulacaoDb }) {
         {!recalculo.sucesso ? (
           <div
             role="alert"
-            className="p-3.5 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800/60 text-red-700 dark:text-red-300 text-xs font-medium space-y-1"
+            className="p-3.5 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-xs font-medium space-y-1"
           >
             <div className="font-semibold flex items-center gap-1.5">
               <svg
-                className="w-4 h-4 text-red-600 dark:text-red-400 shrink-0"
+                className="w-4 h-4 text-destructive shrink-0"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -256,7 +256,7 @@ function CardSimulacao({ item }: { item: SimulacaoDb }) {
           <div className="space-y-4">
             {/* Valor final recalculado */}
             <div className="bg-indigo-50/50 dark:bg-zinc-950/50 p-4 rounded-xl border border-indigo-100 dark:border-zinc-800 transition-colors">
-              <span className="text-[11px] font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider block">
+              <span className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider block">
                 Valor Final Estimado
               </span>
               <div className="text-2xl font-bold font-mono tracking-tight text-indigo-900 dark:text-indigo-400 mt-0.5 tabular-nums">
@@ -266,8 +266,8 @@ function CardSimulacao({ item }: { item: SimulacaoDb }) {
 
             {/* Subtotais */}
             <div className="grid grid-cols-2 gap-3 pt-1">
-              <div className="bg-zinc-50 dark:bg-zinc-950/30 p-3 rounded-xl border border-border dark:border-zinc-800/60">
-                <span className="text-[10px] font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider block">
+              <div className="bg-muted p-3 rounded-xl border border-border dark:border-zinc-800/60">
+                <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider block">
                   Total Investido
                 </span>
                 <span className="text-sm font-bold font-mono text-zinc-800 dark:text-zinc-200 mt-0.5 block tabular-nums">
@@ -275,8 +275,8 @@ function CardSimulacao({ item }: { item: SimulacaoDb }) {
                 </span>
               </div>
 
-              <div className="bg-zinc-50 dark:bg-zinc-950/30 p-3 rounded-xl border border-border dark:border-zinc-800/60">
-                <span className="text-[10px] font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider block">
+              <div className="bg-muted p-3 rounded-xl border border-border dark:border-zinc-800/60">
+                <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider block">
                   Total em Juros
                 </span>
                 <span className="text-sm font-bold font-mono text-juros dark:text-indigo-400 mt-0.5 block tabular-nums">
@@ -299,19 +299,19 @@ function CardSimulacao({ item }: { item: SimulacaoDb }) {
         ) : (
           <div className="space-y-4">
             {/* Produto Vencedor e Valor Líquido */}
-            <div className="bg-emerald-50/50 dark:bg-zinc-950/50 p-4 rounded-xl border border-emerald-100 dark:border-zinc-800 transition-colors">
+            <div className="bg-indigo-50/50 dark:bg-zinc-950/50 p-4 rounded-xl border border-indigo-100 dark:border-zinc-800 transition-colors">
               <div className="flex items-center justify-between gap-2">
-                <span className="text-[11px] font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider block">
+                <span className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider block">
                   Produto Vencedor
                 </span>
-                <span className="px-2 py-0.5 text-[10px] font-bold rounded-md uppercase tracking-wider bg-emerald-600 text-white shadow-xs">
+                <span className="px-2 py-0.5 text-[10px] font-bold rounded-md uppercase tracking-wider bg-indigo-600 text-white shadow-xs">
                   {formatarNomeProduto(recalculo.resumo.produtoVencedor)}
                 </span>
               </div>
-              <div className="text-2xl font-bold font-mono tracking-tight text-emerald-900 dark:text-emerald-400 mt-1 tabular-nums">
+              <div className="text-2xl font-bold font-mono tracking-tight text-indigo-900 dark:text-indigo-400 mt-1 tabular-nums">
                 {formatarMoeda(recalculo.resumo.valorLiquidoVencedor)}
               </div>
-              <span className="text-[10px] text-emerald-700/80 dark:text-emerald-400/80 font-medium">
+              <span className="text-[10px] text-indigo-700/80 dark:text-indigo-400/80 font-medium">
                 Maior valor líquido após impostos
               </span>
             </div>
@@ -338,7 +338,7 @@ function CardSimulacao({ item }: { item: SimulacaoDb }) {
           Recalculado agora
         </span>
         <Link
-          href={item.tipo === "juros_compostos" ? "/" : "/comparador"}
+          href={item.tipo === "juros_compostos" ? "/app" : "/app/comparador"}
           className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 flex items-center gap-1 transition-colors"
         >
           <span>Abrir no simulador</span>
@@ -409,7 +409,7 @@ export default function MinhasSimulacoesPage() {
         <Navegacao />
         <div className="w-full max-w-6xl mx-auto px-4 md:px-8 mt-12 flex flex-col items-center justify-center gap-4 py-24">
           <div className="w-8 h-8 border-3 border-indigo-600 border-t-transparent rounded-full animate-spin" />
-          <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
+          <p className="text-sm font-medium text-muted-foreground">
             Verificando autenticação...
           </p>
         </div>
@@ -426,16 +426,16 @@ export default function MinhasSimulacoesPage() {
         {/* Cabeçalho da Página */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-zinc-100 dark:border-zinc-800 pb-6">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+            <h1 className="text-3xl font-bold tracking-tight text-foreground">
               Minhas Simulações
             </h1>
-            <p className="text-zinc-500 dark:text-zinc-400 mt-1">
+            <p className="text-muted-foreground mt-1">
               Consulte suas simulações salvas, com cálculos e rendimentos atualizados em tempo real.
             </p>
           </div>
 
           {!carregando && !erroRede && (
-            <div className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-800/80 px-3.5 py-2 rounded-xl self-start sm:self-auto border border-zinc-200 dark:border-zinc-700/60">
+            <div className="text-xs font-semibold text-muted-foreground bg-muted px-3.5 py-2 rounded-xl self-start sm:self-auto border border-zinc-200 dark:border-zinc-700/60">
               {simulacoes.length === 1
                 ? "1 simulação salva"
                 : `${simulacoes.length} simulações salvas`}
@@ -447,7 +447,7 @@ export default function MinhasSimulacoesPage() {
         {carregando && (
           <div className="flex flex-col items-center justify-center py-20 gap-4">
             <div className="w-9 h-9 border-3 border-indigo-600 border-t-transparent rounded-full animate-spin" />
-            <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
+            <p className="text-sm font-medium text-muted-foreground">
               Carregando suas simulações salvas...
             </p>
           </div>
@@ -457,9 +457,9 @@ export default function MinhasSimulacoesPage() {
         {!carregando && erroRede && (
           <div
             role="alert"
-            className="p-6 rounded-2xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800/60 text-center max-w-md mx-auto space-y-4 my-8"
+            className="p-6 rounded-2xl bg-destructive/10 border border-destructive/20 text-center max-w-md mx-auto space-y-4 my-8"
           >
-            <div className="w-12 h-12 rounded-full bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-400 mx-auto flex items-center justify-center">
+            <div className="w-12 h-12 rounded-full bg-destructive/20 text-destructive mx-auto flex items-center justify-center">
               <svg
                 className="w-6 h-6"
                 fill="none"
@@ -475,16 +475,16 @@ export default function MinhasSimulacoesPage() {
               </svg>
             </div>
             <div>
-              <h2 className="text-base font-bold text-red-900 dark:text-red-200">
+              <h2 className="text-base font-bold text-destructive">
                 Erro ao carregar simulações
               </h2>
-              <p className="text-xs text-red-700 dark:text-red-400 mt-1">
+              <p className="text-xs text-destructive mt-1">
                 {erroRede}
               </p>
             </div>
             <button
               onClick={carregarSimulacoes}
-              className="px-4 py-2 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer shadow-sm"
+              className="px-4 py-2 bg-destructive hover:bg-destructive/90 text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer shadow-sm"
             >
               Tentar novamente
             </button>
@@ -493,7 +493,7 @@ export default function MinhasSimulacoesPage() {
 
         {/* Estado Vazio */}
         {!carregando && !erroRede && simulacoes.length === 0 && (
-          <div className="flex flex-col items-center justify-center text-center py-16 px-4 bg-zinc-50 dark:bg-zinc-900/40 rounded-3xl border border-dashed border-zinc-200 dark:border-zinc-800 max-w-2xl mx-auto w-full my-6">
+          <div className="flex flex-col items-center justify-center text-center py-16 px-4 bg-muted rounded-3xl border border-dashed border-zinc-200 dark:border-zinc-800 max-w-2xl mx-auto w-full my-6">
             <div className="w-16 h-16 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mb-4">
               <svg
                 className="w-8 h-8"
@@ -510,23 +510,23 @@ export default function MinhasSimulacoesPage() {
               </svg>
             </div>
 
-            <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">
+            <h2 className="text-lg font-bold text-foreground">
               Você ainda não salvou nenhuma simulação
             </h2>
-            <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1 max-w-md">
+            <p className="text-sm text-muted-foreground mt-1 max-w-md">
               Crie uma projeção no simulador de juros compostos ou no comparador de investimentos e salve-a para acompanhar aqui.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center gap-3 mt-6 w-full max-w-sm">
               <Link
-                href="/"
+                href="/app"
                 className="w-full sm:w-auto flex-1 py-2.5 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white text-xs font-bold uppercase tracking-wider text-center shadow-sm transition-all"
               >
                 Juros Compostos
               </Link>
               <Link
-                href="/comparador"
-                className="w-full sm:w-auto flex-1 py-2.5 px-4 rounded-xl bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-900 dark:text-zinc-100 border border-zinc-200 dark:border-zinc-700 text-xs font-bold uppercase tracking-wider text-center shadow-xs transition-all"
+                href="/app/comparador"
+                className="w-full sm:w-auto flex-1 py-2.5 px-4 rounded-xl bg-card hover:bg-muted text-foreground border border-zinc-200 dark:border-zinc-700 text-xs font-bold uppercase tracking-wider text-center shadow-xs transition-all"
               >
                 Comparador
               </Link>

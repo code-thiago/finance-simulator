@@ -65,7 +65,7 @@ export default function CotacaoWidget() {
 
   return (
     <div className="w-full max-w-6xl mx-auto px-4 md:px-8 mb-6 mt-2">
-      <div className="bg-white dark:bg-zinc-900 rounded-2xl border border-border dark:border-zinc-800 shadow-sm p-4 flex flex-col md:flex-row gap-6 md:items-center justify-between w-full">
+      <div className="bg-card rounded-2xl border border-border dark:border-zinc-800 shadow-sm p-4 flex flex-col md:flex-row gap-6 md:items-center justify-between w-full">
 
         {/* Seção da Ação */}
         <div className="flex-1 flex flex-col sm:flex-row items-start sm:items-center gap-4 min-w-0">
@@ -79,7 +79,7 @@ export default function CotacaoWidget() {
                 value={tickerInput}
                 onChange={(e) => setTickerInput(e.target.value)}
                 placeholder="Ticker"
-                className="w-24 uppercase font-extrabold text-sm px-2.5 py-1.5 bg-zinc-50 dark:bg-zinc-950 border border-border dark:border-zinc-800 rounded-lg text-zinc-900 dark:text-zinc-50 focus:outline-none focus:ring-2 focus:ring-ring dark:focus:ring-indigo-500/50 focus:border-transparent transition-all tracking-wider"
+                className="w-24 uppercase font-extrabold text-sm px-2.5 py-1.5 bg-muted border border-border dark:border-zinc-800 rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-ring dark:focus:ring-indigo-500/50 focus:border-transparent transition-all tracking-wider"
               />
               {acaoFetching && (
                 <div className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 border-2 border-zinc-300 dark:border-zinc-700 border-t-indigo-500 rounded-full animate-spin" />
@@ -100,7 +100,7 @@ export default function CotacaoWidget() {
               </span>
             ) : acaoRes?.dados ? (
               <div className="flex flex-wrap items-baseline gap-x-3 gap-y-0.5">
-                <span className="text-lg font-extrabold font-mono text-zinc-900 dark:text-zinc-50 tabular-nums">
+                <span className="text-lg font-extrabold font-mono text-foreground tabular-nums">
                   {formatarReal(acaoRes.dados.preco)}
                 </span>
 
@@ -110,7 +110,7 @@ export default function CotacaoWidget() {
                       ? "text-emerald-600 dark:text-emerald-400"
                       : acaoRes.dados.variacao < 0
                         ? "text-rose-600 dark:text-rose-400"
-                        : "text-zinc-500 dark:text-zinc-400"
+                        : "text-muted-foreground"
                     }`}
                 >
                   {acaoRes.dados.variacao > 0 ? "+" : ""}
@@ -141,7 +141,7 @@ export default function CotacaoWidget() {
             <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider select-none">
               Câmbio
             </span>
-            <span className="px-2 py-1 bg-zinc-50 dark:bg-zinc-950 border border-border dark:border-zinc-800 rounded-lg text-xs font-extrabold text-zinc-700 dark:text-zinc-300 select-none">
+            <span className="px-2 py-1 bg-muted border border-border dark:border-zinc-800 rounded-lg text-xs font-extrabold text-zinc-700 dark:text-zinc-300 select-none">
               USD/BRL
             </span>
           </div>
@@ -159,7 +159,7 @@ export default function CotacaoWidget() {
             ) : cambioRes?.dados ? (
               <div className="flex flex-col items-end">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-lg font-extrabold font-mono text-zinc-900 dark:text-zinc-50 tabular-nums">
+                  <span className="text-lg font-extrabold font-mono text-foreground tabular-nums">
                     {formatarReal(cambioRes.dados.taxa)}
                   </span>
                 </div>

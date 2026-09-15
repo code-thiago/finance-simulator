@@ -19,7 +19,7 @@ export default function RegistroPage() {
   // Redireciona se o usuário já estiver logado
   useEffect(() => {
     if (!isSessionPending && session?.user) {
-      router.replace("/");
+      router.replace("/app");
     }
   }, [session, isSessionPending, router]);
 
@@ -53,7 +53,7 @@ export default function RegistroPage() {
         return;
       }
 
-      router.push("/");
+      router.push("/app");
       router.refresh();
     } catch (err: unknown) {
       const error = err as { message?: string };
@@ -69,13 +69,13 @@ export default function RegistroPage() {
       <Navegacao />
 
       <div className="w-full max-w-md mx-auto px-4 mt-8">
-        <div className="bg-white dark:bg-zinc-900 p-6 sm:p-8 rounded-2xl border border-border dark:border-zinc-800 shadow-sm space-y-6">
+        <div className="bg-card p-6 sm:p-8 rounded-2xl border border-border dark:border-zinc-800 shadow-sm space-y-6">
           {/* Cabeçalho */}
           <div className="text-center space-y-1">
-            <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+            <h1 className="text-2xl font-bold tracking-tight text-foreground">
               Criar sua conta
             </h1>
-            <p className="text-sm text-zinc-500 dark:text-zinc-400">
+            <p className="text-sm text-muted-foreground">
               Cadastre-se para salvar e comparar suas simulações
             </p>
           </div>
@@ -84,7 +84,7 @@ export default function RegistroPage() {
           {errorMessage && (
             <div
               role="alert"
-              className="p-3.5 rounded-xl bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-800/60 text-red-700 dark:text-red-300 text-xs font-medium leading-relaxed"
+              className="p-3.5 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-xs font-medium leading-relaxed"
             >
               {errorMessage}
             </div>
@@ -96,7 +96,7 @@ export default function RegistroPage() {
             <div className="space-y-1.5">
               <label
                 htmlFor="name"
-                className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider block"
+                className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block"
               >
                 Nome Completo
               </label>
@@ -109,7 +109,7 @@ export default function RegistroPage() {
                   placeholder="Seu nome"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full bg-white dark:bg-zinc-950 px-3.5 py-2.5 text-base font-medium text-zinc-900 dark:text-zinc-50 focus:outline-none placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
+                  className="w-full bg-white dark:bg-zinc-950 px-3.5 py-2.5 text-base font-medium text-foreground focus:outline-none placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
                 />
               </div>
             </div>
@@ -118,7 +118,7 @@ export default function RegistroPage() {
             <div className="space-y-1.5">
               <label
                 htmlFor="email"
-                className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider block"
+                className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block"
               >
                 E-mail
               </label>
@@ -131,7 +131,7 @@ export default function RegistroPage() {
                   placeholder="seu@email.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-white dark:bg-zinc-950 px-3.5 py-2.5 text-base font-medium text-zinc-900 dark:text-zinc-50 focus:outline-none placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
+                  className="w-full bg-white dark:bg-zinc-950 px-3.5 py-2.5 text-base font-medium text-foreground focus:outline-none placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
                 />
               </div>
             </div>
@@ -140,7 +140,7 @@ export default function RegistroPage() {
             <div className="space-y-1.5">
               <label
                 htmlFor="password"
-                className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider block"
+                className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block"
               >
                 Senha
               </label>
@@ -153,7 +153,7 @@ export default function RegistroPage() {
                   placeholder="Mínimo de 6 caracteres"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-white dark:bg-zinc-950 px-3.5 py-2.5 text-base font-medium text-zinc-900 dark:text-zinc-50 focus:outline-none placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
+                  className="w-full bg-white dark:bg-zinc-950 px-3.5 py-2.5 text-base font-medium text-foreground focus:outline-none placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
                 />
               </div>
             </div>
@@ -196,7 +196,7 @@ export default function RegistroPage() {
 
           {/* Rodapé com link para login */}
           <div className="text-center pt-2 border-t border-zinc-100 dark:border-zinc-800">
-            <p className="text-xs text-zinc-500 dark:text-zinc-400">
+            <p className="text-xs text-muted-foreground">
               Já tem uma conta?{" "}
               <Link
                 href="/login"
