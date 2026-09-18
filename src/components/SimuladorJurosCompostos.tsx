@@ -9,6 +9,7 @@ import GraficoEvolucao from "./GraficoEvolucao";
 const VALOR_MAXIMO = 1_000_000_000; // R$ 1 bilhão
 const TAXA_MAXIMA = 100; // 100% a.a.
 const PERIODO_MAXIMO_MESES = 1200; // 100 anos
+const RESULTADO_MAXIMO_EXIBIVEL = 1_000_000_000_000_000; // R$ 1 quatrilhão
 
 export default function SimuladorJurosCompostos() {
   const [isMounted, setIsMounted] = useState(false);
@@ -36,8 +37,8 @@ export default function SimuladorJurosCompostos() {
     periodoUnidade === "anos" ? periodo * 12 : periodo
   );
 
-  // Validação estrita na UI para evitar propagar erros para a função core
-  const isValid =
+  // Validação estrita de entrada na UI para evitar propagar erros para a função core
+  const isInputValid =
     !isNaN(valorInicial) &&
     valorInicial >= 0 &&
     valorInicial <= VALOR_MAXIMO &&
@@ -54,8 +55,8 @@ export default function SimuladorJurosCompostos() {
     periodoMeses <= PERIODO_MAXIMO_MESES;
 
   // Memoização do cálculo de juros compostos
-  const pontos: PontoEvolucao[] = useMemo(() => {
-    if (!isValid) return [];
+  const pontosCalculados: PontoEvolucao[] = useMemo(() => {
+    if (!isInputValid) return [];
     try {
       return calcularJurosCompostos({
         valorInicial,
@@ -67,7 +68,23 @@ export default function SimuladorJurosCompostos() {
       // Falha silenciosa de segurança para a UI
       return [];
     }
-  }, [valorInicial, aporteMensal, taxaAnual, periodoMeses, isValid]);
+  }, [valorInicial, aporteMensal, taxaAnual, periodoMeses, isInputValid]);
+
+  // Verificar se o valor final calculado excede o teto exibível ou resulta em overflow numérico
+  const valorCalculadoFinal =
+    isInputValid && pontosCalculados.length > 0
+      ? pontosCalculados[pontosCalculados.length - 1].valorTotal
+      : 0;
+
+  const resultadoExcedeLimite =
+    valorCalculadoFinal > RESULTADO_MAXIMO_EXIBIVEL ||
+    !Number.isFinite(valorCalculadoFinal);
+
+  const isValid = isInputValid && !resultadoExcedeLimite;
+  const pontos = useMemo(
+    () => (isValid ? pontosCalculados : []),
+    [isValid, pontosCalculados]
+  );
 
   // Prepara dados do gráfico injetando o ponto inicial (Mês 0) com memoização
   const dadosGrafico: PontoEvolucao[] = useMemo(() => {
@@ -274,7 +291,7 @@ export default function SimuladorJurosCompostos() {
             {/* Aviso de erro/validação amigável */}
             {!isValid && (
               <div className="text-xs text-indigo-600 dark:text-indigo-400 mt-2 bg-indigo-50/30 dark:bg-indigo-950/20 p-2.5 rounded-lg border border-indigo-100/50 dark:border-indigo-950/30 font-medium">
-                ⚠️ Insira um período válido (maior que 0 e até 100 anos), uma taxa entre 0% e 100%, e valores até R$ 1 bilhão para simular.
+                ⚠️ Insira um período válido (maior que 0 e até 100 anos), uma taxa entre 0% e 100%, e valores até R$ 1 bilhão para simular. Se o resultado for maior que R$ 1 quatrilhão, reduza os valores de entrada.
               </div>
             )}
           </div>

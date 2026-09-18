@@ -13,6 +13,7 @@ const VALOR_MAXIMO = 1_000_000_000; // R$ 1 bilhão
 const TAXA_MAXIMA = 100; // 100% a.a.
 const PERIODO_MAXIMO_MESES = 1200; // 100 anos
 const PERCENTUAL_CDI_MAXIMO = 1000; // 1000% do CDI
+const RESULTADO_MAXIMO_EXIBIVEL = 1_000_000_000_000_000; // R$ 1 quatrilhão
 
 export default function ComparadorInvestimentos() {
   const [isMounted, setIsMounted] = useState(false);
@@ -40,8 +41,8 @@ export default function ComparadorInvestimentos() {
     periodoUnidade === "anos" ? periodo * 12 : periodo
   );
 
-  // Validação estrita na UI para evitar propagar erros para a função core
-  const isValid =
+  // Validação estrita de entrada na UI para evitar propagar erros para a função core
+  const isInputValid =
     !isNaN(valorInicial) &&
     valorInicial >= 0 &&
     valorInicial <= VALOR_MAXIMO &&
@@ -58,8 +59,8 @@ export default function ComparadorInvestimentos() {
     percentualCDI <= PERCENTUAL_CDI_MAXIMO;
 
   // Memoização do cálculo de comparação de investimentos
-  const resultados: ResultadoInvestimento[] = useMemo(() => {
-    if (!isValid) return [];
+  const resultadosCalculados: ResultadoInvestimento[] = useMemo(() => {
+    if (!isInputValid) return [];
     try {
       return compararInvestimentos({
         valorInicial,
@@ -70,7 +71,23 @@ export default function ComparadorInvestimentos() {
     } catch {
       return [];
     }
-  }, [valorInicial, periodoMeses, taxaSelicAnual, percentualCDI, isValid]);
+  }, [valorInicial, periodoMeses, taxaSelicAnual, percentualCDI, isInputValid]);
+
+  // Verificar se o maior valor líquido excede o teto exibível ou resulta em overflow
+  const maiorValorLiquido = useMemo(() => {
+    if (resultadosCalculados.length === 0) return 0;
+    return Math.max(...resultadosCalculados.map((r) => r.valorLiquido));
+  }, [resultadosCalculados]);
+
+  const resultadoExcedeLimite =
+    maiorValorLiquido > RESULTADO_MAXIMO_EXIBIVEL ||
+    !Number.isFinite(maiorValorLiquido);
+
+  const isValid = isInputValid && !resultadoExcedeLimite;
+  const resultados = useMemo(
+    () => (isValid ? resultadosCalculados : []),
+    [isValid, resultadosCalculados]
+  );
 
   // Se for inválido, exibe estado zerado memoizado
   const resultadosExibicao: ResultadoInvestimento[] = useMemo(() => {
@@ -286,7 +303,7 @@ export default function ComparadorInvestimentos() {
           {/* Aviso de erro ou validação */}
           {!isValid && (
             <div className="text-xs text-indigo-600 dark:text-indigo-400 bg-indigo-50/30 dark:bg-indigo-950/20 p-3.5 rounded-xl border border-indigo-100/50 dark:border-indigo-950/30 font-medium">
-              ⚠️ Insira um período válido (maior que 0 e até 100 anos), taxa Selic entre 0% e 100%, CDI até 1000% e valores até R$ 1 bilhão para simular.
+              ⚠️ Insira um período válido (maior que 0 e até 100 anos), taxa Selic entre 0% e 100%, CDI até 1000% e valores até R$ 1 bilhão para simular. Se o resultado for maior que R$ 1 quatrilhão, reduza os valores de entrada.
             </div>
           )}
 
