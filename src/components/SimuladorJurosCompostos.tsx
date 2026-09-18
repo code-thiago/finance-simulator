@@ -6,6 +6,10 @@ import { formatarMoeda } from "@/src/lib/formatters";
 import BlocoSalvarSimulacao from "./BlocoSalvarSimulacao";
 import GraficoEvolucao from "./GraficoEvolucao";
 
+const VALOR_MAXIMO = 1_000_000_000; // R$ 1 bilhão
+const TAXA_MAXIMA = 100; // 100% a.a.
+const PERIODO_MAXIMO_MESES = 1200; // 100 anos
+
 export default function SimuladorJurosCompostos() {
   const [isMounted, setIsMounted] = useState(false);
 
@@ -36,14 +40,18 @@ export default function SimuladorJurosCompostos() {
   const isValid =
     !isNaN(valorInicial) &&
     valorInicial >= 0 &&
+    valorInicial <= VALOR_MAXIMO &&
     !isNaN(aporteMensal) &&
     aporteMensal >= 0 &&
+    aporteMensal <= VALOR_MAXIMO &&
     !isNaN(taxaAnual) &&
     taxaAnual >= 0 &&
+    taxaAnual <= TAXA_MAXIMA &&
     !isNaN(periodo) &&
     periodo > 0 &&
     !isNaN(periodoMeses) &&
-    periodoMeses > 0;
+    periodoMeses > 0 &&
+    periodoMeses <= PERIODO_MAXIMO_MESES;
 
   // Memoização do cálculo de juros compostos
   const pontos: PontoEvolucao[] = useMemo(() => {
@@ -120,17 +128,17 @@ export default function SimuladorJurosCompostos() {
             {/* Grid dos Subcards */}
             <div className="grid grid-cols-2 gap-4">
               {/* Card Investido */}
-              <div className="bg-card p-4 rounded-xl border-l-4 border-investido border-t border-r border-b border-zinc-100 dark:border-zinc-800 shadow-sm transition-all duration-300">
+              <div className="bg-card p-4 rounded-xl border-l-4 border-investido border-t border-r border-b border-border shadow-sm transition-all duration-300">
                 <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider block">
                   Total Investido
                 </span>
-                <div className="text-lg font-bold font-mono text-zinc-800 dark:text-zinc-200 mt-1 tabular-nums">
+                <div className="text-lg font-bold font-mono text-foreground mt-1 tabular-nums">
                   {formatarMoeda(totalInvestido)}
                 </div>
               </div>
 
               {/* Card Juros */}
-              <div className="bg-card p-4 rounded-xl border-l-4 border-juros border-t border-r border-b border-zinc-100 dark:border-zinc-800 shadow-sm transition-all duration-300">
+              <div className="bg-card p-4 rounded-xl border-l-4 border-juros border-t border-r border-b border-border shadow-sm transition-all duration-300">
                 <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider block">
                   Total em Juros
                 </span>
@@ -143,7 +151,7 @@ export default function SimuladorJurosCompostos() {
 
           {/* 1. Formulário */}
           <div className="bg-card p-6 rounded-2xl border border-border dark:border-zinc-800 shadow-sm space-y-4">
-            <h2 className="text-sm font-bold text-zinc-800 dark:text-zinc-200 uppercase tracking-wider border-b border-zinc-100 dark:border-zinc-800 pb-2">
+            <h2 className="text-sm font-bold text-foreground uppercase tracking-wider border-b border-border pb-2">
               Configurações do Investimento
             </h2>
 
@@ -153,18 +161,19 @@ export default function SimuladorJurosCompostos() {
                 Valor Inicial (R$)
               </label>
               <div className="relative rounded-lg border border-border dark:border-zinc-800 overflow-hidden focus-within:ring-2 focus-within:ring-ring dark:focus-within:ring-indigo-500/50 focus-within:border-transparent transition-all">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-zinc-400 font-medium select-none">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground font-medium select-none">
                   R$
                 </span>
                 <input
                   id="valorInicial"
                   type="number"
                   min="0"
+                  max={VALOR_MAXIMO}
                   step="any"
                   placeholder="0,00"
                   value={valorInicialStr}
                   onChange={(e) => setValorInicialStr(e.target.value)}
-                  className="w-full bg-white dark:bg-zinc-950 pl-9 pr-3 py-2.5 text-base font-semibold text-foreground focus:outline-none placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
+                  className="w-full bg-muted pl-9 pr-3 py-2.5 text-base font-semibold text-foreground focus:outline-none placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
                 />
               </div>
             </div>
@@ -175,18 +184,19 @@ export default function SimuladorJurosCompostos() {
                 Aporte Mensal (R$)
               </label>
               <div className="relative rounded-lg border border-border dark:border-zinc-800 overflow-hidden focus-within:ring-2 focus-within:ring-ring dark:focus-within:ring-indigo-500/50 focus-within:border-transparent transition-all">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-zinc-400 font-medium select-none">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground font-medium select-none">
                   R$
                 </span>
                 <input
                   id="aporteMensal"
                   type="number"
                   min="0"
+                  max={VALOR_MAXIMO}
                   step="any"
                   placeholder="0,00"
                   value={aporteMensalStr}
                   onChange={(e) => setAporteMensalStr(e.target.value)}
-                  className="w-full bg-white dark:bg-zinc-950 pl-9 pr-3 py-2.5 text-base font-semibold text-foreground focus:outline-none placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
+                  className="w-full bg-muted pl-9 pr-3 py-2.5 text-base font-semibold text-foreground focus:outline-none placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
                 />
               </div>
             </div>
@@ -202,13 +212,15 @@ export default function SimuladorJurosCompostos() {
                   <input
                     id="taxaAnual"
                     type="number"
+                    min="0"
+                    max={TAXA_MAXIMA}
                     step="any"
                     placeholder="0"
                     value={taxaAnualStr}
                     onChange={(e) => setTaxaAnualStr(e.target.value)}
-                    className="w-full bg-white dark:bg-zinc-950 px-3 py-2.5 text-base font-semibold text-foreground focus:outline-none placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
+                    className="w-full bg-muted px-3 py-2.5 text-base font-semibold text-foreground focus:outline-none placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
                   />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-zinc-400 font-medium select-none pointer-events-none">
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground font-medium select-none pointer-events-none">
                     % a.a.
                   </span>
                 </div>
@@ -219,11 +231,12 @@ export default function SimuladorJurosCompostos() {
                 <label htmlFor="periodo" className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
                   Período
                 </label>
-                <div className="flex rounded-lg border border-border dark:border-zinc-800 overflow-hidden focus-within:ring-2 focus-within:ring-ring dark:focus-within:ring-indigo-500/50 focus-within:border-transparent transition-all bg-white dark:bg-zinc-950">
+                <div className="flex rounded-lg border border-border dark:border-zinc-800 overflow-hidden focus-within:ring-2 focus-within:ring-ring dark:focus-within:ring-indigo-500/50 focus-within:border-transparent transition-all bg-muted">
                   <input
                     id="periodo"
                     type="number"
                     min="0"
+                    max={periodoUnidade === "anos" ? PERIODO_MAXIMO_MESES / 12 : PERIODO_MAXIMO_MESES}
                     step="any"
                     placeholder="0"
                     value={periodoStr}
@@ -261,7 +274,7 @@ export default function SimuladorJurosCompostos() {
             {/* Aviso de erro/validação amigável */}
             {!isValid && (
               <div className="text-xs text-indigo-600 dark:text-indigo-400 mt-2 bg-indigo-50/30 dark:bg-indigo-950/20 p-2.5 rounded-lg border border-indigo-100/50 dark:border-indigo-950/30 font-medium">
-                ⚠️ Insira um período válido (maior que 0) e uma taxa de juros não negativa para simular.
+                ⚠️ Insira um período válido (maior que 0 e até 100 anos), uma taxa entre 0% e 100%, e valores até R$ 1 bilhão para simular.
               </div>
             )}
           </div>

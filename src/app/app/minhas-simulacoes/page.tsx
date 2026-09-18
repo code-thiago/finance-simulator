@@ -209,13 +209,13 @@ function CardSimulacao({ item }: { item: SimulacaoDb }) {
               Juros Compostos
             </span>
           ) : (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold tracking-wide bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800/60">
-              <span className="w-1.5 h-1.5 rounded-full bg-indigo-600 dark:bg-indigo-400" />
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold tracking-wide bg-violet-50 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300 border border-violet-200 dark:border-violet-800/60">
+              <span className="w-1.5 h-1.5 rounded-full bg-violet-600 dark:bg-violet-400" />
               Comparador
             </span>
           )}
 
-          <span className="text-xs text-zinc-400 dark:text-zinc-500 font-medium">
+          <span className="text-xs text-muted-foreground font-medium">
             {dataFormatada}
           </span>
         </div>
@@ -270,7 +270,7 @@ function CardSimulacao({ item }: { item: SimulacaoDb }) {
                 <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider block">
                   Total Investido
                 </span>
-                <span className="text-sm font-bold font-mono text-zinc-800 dark:text-zinc-200 mt-0.5 block tabular-nums">
+                <span className="text-sm font-bold font-mono text-foreground mt-0.5 block tabular-nums">
                   {formatarMoeda(recalculo.resumo.totalInvestido)}
                 </span>
               </div>
@@ -286,7 +286,7 @@ function CardSimulacao({ item }: { item: SimulacaoDb }) {
             </div>
 
             {/* Resumo dos parâmetros */}
-            <div className="text-[11px] text-zinc-400 dark:text-zinc-500 pt-1 flex flex-wrap gap-x-3 gap-y-1">
+            <div className="text-[11px] text-muted-foreground pt-1 flex flex-wrap gap-x-3 gap-y-1">
               <span>
                 Aporte: {formatarMoeda(recalculo.resumo.parametros.aporteMensal)}/mês
               </span>
@@ -317,7 +317,7 @@ function CardSimulacao({ item }: { item: SimulacaoDb }) {
             </div>
 
             {/* Resumo dos parâmetros */}
-            <div className="text-[11px] text-zinc-400 dark:text-zinc-500 pt-1 flex flex-wrap gap-x-3 gap-y-1">
+            <div className="text-[11px] text-muted-foreground pt-1 flex flex-wrap gap-x-3 gap-y-1">
               <span>
                 Inicial: {formatarMoeda(recalculo.resumo.parametros.valorInicial)}
               </span>
@@ -333,8 +333,8 @@ function CardSimulacao({ item }: { item: SimulacaoDb }) {
       </div>
 
       {/* Rodapé com link para ferramenta */}
-      <div className="pt-3 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between">
-        <span className="text-[11px] text-zinc-400 dark:text-zinc-500">
+      <div className="pt-3 border-t border-border flex items-center justify-between">
+        <span className="text-[11px] text-muted-foreground">
           Recalculado agora
         </span>
         <Link
@@ -424,7 +424,7 @@ export default function MinhasSimulacoesPage() {
 
       <main className="w-full max-w-6xl mx-auto p-4 md:p-8 flex flex-col gap-8">
         {/* Cabeçalho da Página */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-zinc-100 dark:border-zinc-800 pb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-border pb-6">
           <div>
             <h1 className="text-3xl font-bold tracking-tight text-foreground">
               Minhas Simulações

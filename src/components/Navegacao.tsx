@@ -30,27 +30,38 @@ export default function Navegacao() {
     }
   };
 
+  const isAuthPage = pathname === "/login" || pathname === "/registro";
+
   return (
     <nav className="w-full max-w-6xl mx-auto px-4 md:px-8 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-      {/* Links de navegação das ferramentas */}
-      <div className="flex gap-1.5 p-1 bg-muted rounded-xl border border-border dark:border-zinc-800/80 shadow-sm backdrop-blur-sm">
-        {links.map((link) => {
-          const isActive = pathname === link.href;
-          return (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg transition-all duration-200 ${
-                isActive
-                  ? "bg-card text-foreground shadow-sm border border-border"
-                  : "text-muted-foreground hover:text-foreground border border-transparent"
-              }`}
-            >
-              {link.label}
-            </Link>
-          );
-        })}
-      </div>
+      {/* Links de navegação das ferramentas ou link de retorno */}
+      {isAuthPage ? (
+        <Link
+          href="/"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted"
+        >
+          <span aria-hidden="true">&larr;</span> Voltar ao início
+        </Link>
+      ) : (
+        <div className="flex gap-1.5 p-1 bg-muted rounded-xl border border-border dark:border-zinc-800/80 shadow-sm backdrop-blur-sm">
+          {links.map((link) => {
+            const isActive = pathname === link.href;
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg transition-all duration-200 ${
+                  isActive
+                    ? "bg-card text-foreground shadow-sm border border-border"
+                    : "text-muted-foreground hover:text-foreground border border-transparent"
+                }`}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
+        </div>
+      )}
 
       {/* Seção de Autenticação */}
       <div className="flex items-center gap-3">

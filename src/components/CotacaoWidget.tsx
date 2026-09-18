@@ -70,7 +70,7 @@ export default function CotacaoWidget() {
         {/* Seção da Ação */}
         <div className="flex-1 flex flex-col sm:flex-row items-start sm:items-center gap-4 min-w-0">
           <div className="flex items-center gap-2">
-            <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider select-none">
+            <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider select-none">
               Ação
             </span>
             <div className="relative">
@@ -118,16 +118,16 @@ export default function CotacaoWidget() {
                   {acaoRes.dados.variacaoPercentual.toFixed(2)}%)
                 </span>
 
-                <span className="text-xs font-semibold text-zinc-400 truncate max-w-[200px]" title={acaoRes.dados.nome}>
+                <span className="text-xs font-semibold text-muted-foreground truncate max-w-[200px]" title={acaoRes.dados.nome}>
                   {acaoRes.dados.nome}
                 </span>
 
-                <span className="text-[10px] text-zinc-400 font-medium">
+                <span className="text-[10px] text-muted-foreground font-medium">
                   • Atualizado às {formatarHora(acaoRes.atualizadoEm)}
                 </span>
               </div>
             ) : (
-              <span className="text-xs text-zinc-400">Digite um ticker para buscar.</span>
+              <span className="text-xs text-muted-foreground">Digite um ticker para buscar.</span>
             )}
           </div>
         </div>
@@ -138,7 +138,7 @@ export default function CotacaoWidget() {
         {/* Seção do Câmbio */}
         <div className="flex-1 md:max-w-xs flex items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider select-none">
+            <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider select-none">
               Câmbio
             </span>
             <span className="px-2 py-1 bg-muted border border-border dark:border-zinc-800 rounded-lg text-xs font-extrabold text-zinc-700 dark:text-zinc-300 select-none">
@@ -163,7 +163,7 @@ export default function CotacaoWidget() {
                     {formatarReal(cambioRes.dados.taxa)}
                   </span>
                 </div>
-                <span className="text-[10px] text-zinc-400 font-medium mt-0.5">
+                <span className="text-[10px] text-muted-foreground font-medium mt-0.5">
                   Atualizado às {formatarHora(cambioRes.atualizadoEm)}
                 </span>
               </div>

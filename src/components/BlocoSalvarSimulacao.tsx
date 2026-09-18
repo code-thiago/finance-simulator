@@ -51,8 +51,8 @@ export default function BlocoSalvarSimulacao({
 
   return (
     <div className="bg-card p-6 rounded-2xl border border-border dark:border-zinc-800 shadow-sm space-y-4">
-      <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-2">
-        <h2 className="text-sm font-bold text-zinc-800 dark:text-zinc-200 uppercase tracking-wider">
+      <div className="flex items-center justify-between border-b border-border pb-2">
+        <h2 className="text-sm font-bold text-foreground uppercase tracking-wider">
           {titulo}
         </h2>
         <span className="text-[10px] font-semibold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/40 px-2 py-0.5 rounded-full">
@@ -110,7 +110,7 @@ export default function BlocoSalvarSimulacao({
               placeholder={placeholder}
               value={nomeSimulacao}
               onChange={(e) => setNomeSimulacao(e.target.value)}
-              className="w-full bg-white dark:bg-zinc-950 px-3.5 py-2 text-sm font-medium text-foreground focus:outline-none placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
+              className="w-full bg-muted px-3.5 py-2 text-sm font-medium text-foreground focus:outline-none placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
             />
           </div>
         </div>

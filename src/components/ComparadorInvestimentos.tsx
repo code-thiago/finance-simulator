@@ -9,6 +9,11 @@ import { formatarMoeda } from "@/src/lib/formatters";
 import BlocoSalvarSimulacao from "./BlocoSalvarSimulacao";
 import GraficoComparacao, { ItemDadoGraficoComparacao } from "./GraficoComparacao";
 
+const VALOR_MAXIMO = 1_000_000_000; // R$ 1 bilhão
+const TAXA_MAXIMA = 100; // 100% a.a.
+const PERIODO_MAXIMO_MESES = 1200; // 100 anos
+const PERCENTUAL_CDI_MAXIMO = 1000; // 1000% do CDI
+
 export default function ComparadorInvestimentos() {
   const [isMounted, setIsMounted] = useState(false);
 
@@ -39,14 +44,18 @@ export default function ComparadorInvestimentos() {
   const isValid =
     !isNaN(valorInicial) &&
     valorInicial >= 0 &&
+    valorInicial <= VALOR_MAXIMO &&
     !isNaN(periodo) &&
     periodo > 0 &&
     !isNaN(periodoMeses) &&
     periodoMeses > 0 &&
+    periodoMeses <= PERIODO_MAXIMO_MESES &&
     !isNaN(taxaSelicAnual) &&
     taxaSelicAnual >= 0 &&
+    taxaSelicAnual <= TAXA_MAXIMA &&
     !isNaN(percentualCDI) &&
-    percentualCDI >= 0;
+    percentualCDI >= 0 &&
+    percentualCDI <= PERCENTUAL_CDI_MAXIMO;
 
   // Memoização do cálculo de comparação de investimentos
   const resultados: ResultadoInvestimento[] = useMemo(() => {
@@ -144,7 +153,7 @@ export default function ComparadorInvestimentos() {
         {/* Lado Esquerdo: Formulário */}
         <div className="lg:col-span-5 flex flex-col gap-6 w-full">
           <div className="bg-card p-6 rounded-2xl border border-border dark:border-zinc-800 shadow-sm space-y-4">
-            <h2 className="text-sm font-bold text-zinc-800 dark:text-zinc-200 uppercase tracking-wider border-b border-zinc-100 dark:border-zinc-800 pb-2">
+            <h2 className="text-sm font-bold text-foreground uppercase tracking-wider border-b border-border pb-2">
               Configurações da Comparação
             </h2>
 
@@ -157,18 +166,19 @@ export default function ComparadorInvestimentos() {
                 Valor Inicial (R$)
               </label>
               <div className="relative rounded-lg border border-border dark:border-zinc-800 overflow-hidden focus-within:ring-2 focus-within:ring-ring dark:focus-within:ring-indigo-500/50 focus-within:border-transparent transition-all">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-zinc-400 font-medium select-none">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground font-medium select-none">
                   R$
                 </span>
                 <input
                   id="valorInicial"
                   type="number"
                   min="0"
+                  max={VALOR_MAXIMO}
                   step="any"
                   placeholder="0,00"
                   value={valorInicialStr}
                   onChange={(e) => setValorInicialStr(e.target.value)}
-                  className="w-full bg-white dark:bg-zinc-950 pl-9 pr-3 py-2.5 text-base font-semibold text-foreground focus:outline-none placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
+                  className="w-full bg-muted pl-9 pr-3 py-2.5 text-base font-semibold text-foreground focus:outline-none placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
                 />
               </div>
             </div>
@@ -181,11 +191,12 @@ export default function ComparadorInvestimentos() {
               >
                 Período da Aplicação
               </label>
-              <div className="flex rounded-lg border border-border dark:border-zinc-800 overflow-hidden focus-within:ring-2 focus-within:ring-ring dark:focus-within:ring-indigo-500/50 focus-within:border-transparent transition-all bg-white dark:bg-zinc-950">
+              <div className="flex rounded-lg border border-border dark:border-zinc-800 overflow-hidden focus-within:ring-2 focus-within:ring-ring dark:focus-within:ring-indigo-500/50 focus-within:border-transparent transition-all bg-muted">
                 <input
                   id="periodo"
                   type="number"
                   min="0"
+                  max={periodoUnidade === "anos" ? PERIODO_MAXIMO_MESES / 12 : PERIODO_MAXIMO_MESES}
                   step="any"
                   placeholder="0"
                   value={periodoStr}
@@ -232,13 +243,14 @@ export default function ComparadorInvestimentos() {
                   id="taxaSelic"
                   type="number"
                   min="0"
+                  max={TAXA_MAXIMA}
                   step="any"
                   placeholder="0,00"
                   value={taxaSelicAnualStr}
                   onChange={(e) => setTaxaSelicAnualStr(e.target.value)}
-                  className="w-full bg-white dark:bg-zinc-950 px-3 py-2.5 text-base font-semibold text-foreground focus:outline-none placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
+                  className="w-full bg-muted px-3 py-2.5 text-base font-semibold text-foreground focus:outline-none placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
                 />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-zinc-400 font-semibold select-none">
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground font-semibold select-none">
                   % a.a.
                 </span>
               </div>
@@ -257,13 +269,14 @@ export default function ComparadorInvestimentos() {
                   id="percentualCDI"
                   type="number"
                   min="0"
+                  max={PERCENTUAL_CDI_MAXIMO}
                   step="any"
                   placeholder="100"
                   value={percentualCDIStr}
                   onChange={(e) => setPercentualCDIStr(e.target.value)}
-                  className="w-full bg-white dark:bg-zinc-950 px-3 py-2.5 text-base font-semibold text-foreground focus:outline-none placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
+                  className="w-full bg-muted px-3 py-2.5 text-base font-semibold text-foreground focus:outline-none placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
                 />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-zinc-400 font-semibold select-none">
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground font-semibold select-none">
                   % do CDI
                 </span>
               </div>
@@ -273,7 +286,7 @@ export default function ComparadorInvestimentos() {
           {/* Aviso de erro ou validação */}
           {!isValid && (
             <div className="text-xs text-indigo-600 dark:text-indigo-400 bg-indigo-50/30 dark:bg-indigo-950/20 p-3.5 rounded-xl border border-indigo-100/50 dark:border-indigo-950/30 font-medium">
-              ⚠️ Preencha todos os campos com valores válidos (maiores ou iguais a zero) para visualizar a comparação.
+              ⚠️ Insira um período válido (maior que 0 e até 100 anos), taxa Selic entre 0% e 100%, CDI até 1000% e valores até R$ 1 bilhão para simular.
             </div>
           )}
 
@@ -311,7 +324,7 @@ export default function ComparadorInvestimentos() {
                   <div className="p-5 flex flex-col flex-1 gap-3">
                     {/* Linha superior: Nome do Produto + Badge de destaque */}
                     <div className="flex items-center justify-between gap-2">
-                      <span className="text-sm font-bold text-zinc-800 dark:text-zinc-200">
+                      <span className="text-sm font-bold text-foreground">
                         {formatarNomeProduto(r.produto)}
                       </span>
                       {isBest && (
@@ -323,7 +336,7 @@ export default function ComparadorInvestimentos() {
 
                     {/* Destaque: Valor Líquido */}
                     <div>
-                      <span className="text-[10px] font-semibold text-zinc-400 uppercase tracking-wider block">
+                      <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider block">
                         Valor Líquido
                       </span>
                       <div
@@ -338,21 +351,21 @@ export default function ComparadorInvestimentos() {
                     </div>
 
                     {/* Detalhes menores */}
-                    <div className="border-t border-zinc-100 dark:border-zinc-800/80 pt-3 mt-auto space-y-1.5 text-xs">
+                    <div className="border-t border-border pt-3 mt-auto space-y-1.5 text-xs">
                       <div className="flex justify-between">
-                        <span className="text-zinc-400">Valor Bruto:</span>
+                        <span className="text-muted-foreground">Valor Bruto:</span>
                         <span className="font-semibold text-zinc-700 dark:text-zinc-300 font-mono tabular-nums">
                           {formatarMoeda(r.valorBruto)}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-zinc-400">Rendimento Líq.:</span>
+                        <span className="text-muted-foreground">Rendimento Líq.:</span>
                         <span className="font-semibold text-zinc-700 dark:text-zinc-300 font-mono tabular-nums">
                           {formatarMoeda(r.rendimentoLiquido)}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-zinc-400">Alíquota IR:</span>
+                        <span className="text-muted-foreground">Alíquota IR:</span>
                         <span className="font-semibold text-zinc-700 dark:text-zinc-300">
                           {r.aliquotaIR !== null ? `${r.aliquotaIR.toFixed(1)}%` : "Isento"}
                         </span>

@@ -62,7 +62,7 @@ export const GraficoEvolucao = memo(function GraficoEvolucao({
   return (
     <div className="bg-card p-6 rounded-2xl border border-border dark:border-zinc-800 shadow-sm flex flex-col w-full h-[480px]">
       {/* Custom Header que funciona como Legenda */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-zinc-100 dark:border-zinc-800 pb-4 mb-4 gap-2">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-border pb-4 mb-4 gap-2">
         <div>
           <h3 className="font-bold text-foreground">
             Evolução Patrimonial
@@ -120,7 +120,7 @@ export const GraficoEvolucao = memo(function GraficoEvolucao({
                       const data = payload[0].payload;
                       return (
                         <div className="bg-card/95 backdrop-blur-sm p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-xl text-xs space-y-2">
-                          <p className="font-bold text-foreground border-b border-zinc-100 dark:border-zinc-800 pb-1">
+                          <p className="font-bold text-foreground border-b border-border pb-1">
                             {formatarLabelTooltip(label)}
                           </p>
                           <div className="space-y-1.5 font-mono">
@@ -140,8 +140,8 @@ export const GraficoEvolucao = memo(function GraficoEvolucao({
                                 +{formatarMoeda(data.jurosAcumulados)}
                               </span>
                             </div>
-                            <div className="flex justify-between gap-6 border-t border-zinc-100 dark:border-zinc-800 pt-1.5 font-bold">
-                              <span className="text-zinc-800 dark:text-zinc-200">
+                            <div className="flex justify-between gap-6 border-t border-border pt-1.5 font-bold">
+                              <span className="text-foreground">
                                 Total:
                               </span>
                               <span className="tabular-nums text-indigo-950 dark:text-indigo-300">

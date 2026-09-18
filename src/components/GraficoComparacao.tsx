@@ -53,7 +53,7 @@ export const GraficoComparacao = memo(function GraficoComparacao({
   return (
     <div className="bg-card p-6 rounded-2xl border border-border dark:border-zinc-800 shadow-sm flex flex-col h-[350px]">
       <div className="mb-4">
-        <h3 className="text-sm font-bold text-zinc-800 dark:text-zinc-200 uppercase tracking-wider">
+        <h3 className="text-sm font-bold text-foreground uppercase tracking-wider">
           Comparação de Valor Líquido
         </h3>
         <p className="text-xs text-muted-foreground mt-0.5">
@@ -96,7 +96,7 @@ export const GraficoComparacao = memo(function GraficoComparacao({
                       const data = payload[0].payload;
                       return (
                         <div className="bg-card/95 backdrop-blur-sm p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-xl text-xs space-y-2">
-                          <p className="font-bold text-foreground border-b border-zinc-100 dark:border-zinc-800 pb-1">
+                          <p className="font-bold text-foreground border-b border-border pb-1">
                             {data.name}
                           </p>
                           <div className="space-y-1 font-mono">
@@ -108,8 +108,8 @@ export const GraficoComparacao = memo(function GraficoComparacao({
                                 {formatarMoeda(data.valorBruto)}
                               </span>
                             </div>
-                            <div className="flex justify-between gap-6 border-t border-zinc-100 dark:border-zinc-800 pt-1 font-bold">
-                              <span className="text-zinc-800 dark:text-zinc-200">
+                            <div className="flex justify-between gap-6 border-t border-border pt-1 font-bold">
+                              <span className="text-foreground">
                                 Valor Líquido:
                               </span>
                               <span className="tabular-nums text-ring dark:text-indigo-400">

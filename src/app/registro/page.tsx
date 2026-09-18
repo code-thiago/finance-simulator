@@ -109,7 +109,7 @@ export default function RegistroPage() {
                   placeholder="Seu nome"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full bg-white dark:bg-zinc-950 px-3.5 py-2.5 text-base font-medium text-foreground focus:outline-none placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
+                  className="w-full bg-muted px-3.5 py-2.5 text-base font-medium text-foreground focus:outline-none placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
                 />
               </div>
             </div>
@@ -131,7 +131,7 @@ export default function RegistroPage() {
                   placeholder="seu@email.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-white dark:bg-zinc-950 px-3.5 py-2.5 text-base font-medium text-foreground focus:outline-none placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
+                  className="w-full bg-muted px-3.5 py-2.5 text-base font-medium text-foreground focus:outline-none placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
                 />
               </div>
             </div>
@@ -150,10 +150,10 @@ export default function RegistroPage() {
                   type="password"
                   required
                   autoComplete="new-password"
-                  placeholder="Mínimo de 6 caracteres"
+                  placeholder="Mínimo de 8 caracteres"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-white dark:bg-zinc-950 px-3.5 py-2.5 text-base font-medium text-foreground focus:outline-none placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
+                  className="w-full bg-muted px-3.5 py-2.5 text-base font-medium text-foreground focus:outline-none placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
                 />
               </div>
             </div>
@@ -195,7 +195,7 @@ export default function RegistroPage() {
           </form>
 
           {/* Rodapé com link para login */}
-          <div className="text-center pt-2 border-t border-zinc-100 dark:border-zinc-800">
+          <div className="text-center pt-2 border-t border-border">
             <p className="text-xs text-muted-foreground">
               Já tem uma conta?{" "}
               <Link
