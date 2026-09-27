@@ -2,6 +2,8 @@
 
 Financial calculations for TypeScript. Pure functions, compound arithmetic, zero floating-point drift.
 
+Link: https://finance-simulator-two.vercel.app
+
 ```ts
 import { calcularJurosCompostos } from "@/src/core/jurosCompostos";
 
