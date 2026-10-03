@@ -1,3 +1,4 @@
+import "server-only";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "@/src/db";
@@ -17,6 +18,7 @@ export const auth = betterAuth({
   baseURL: getBaseURL(),
   trustedOrigins: [
     "https://*.vercel.app",
+    "http://localhost:3000",
   ],
   database: drizzleAdapter(db, {
     provider: "pg",

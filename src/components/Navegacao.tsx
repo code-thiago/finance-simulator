@@ -15,6 +15,7 @@ export default function Navegacao() {
     { href: "/app", label: "Juros Compostos" },
     { href: "/app/comparador", label: "Comparador" },
     ...(session?.user ? [{ href: "/app/minhas-simulacoes", label: "Minhas Simulações" }] : []),
+    { href: "/sobre", label: "Documentação" },
   ];
 
   const handleSignOut = async () => {

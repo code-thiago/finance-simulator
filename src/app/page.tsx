@@ -35,6 +35,15 @@ export default function LandingPlaceholderPage() {
             Criar conta
           </Link>
         </div>
+
+        <div className="pt-2">
+          <Link
+            href="/sobre"
+            className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors hover:underline underline-offset-4"
+          >
+            Sobre o projeto &rarr;
+          </Link>
+        </div>
       </div>
     </main>
   );
